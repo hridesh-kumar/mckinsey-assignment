@@ -1,7 +1,9 @@
 package com.mckinsey.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,12 +20,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mckinsey.dtos.AuthRequest;
+import com.mckinsey.dtos.AuthResponse;
 import com.mckinsey.dtos.UserDTO;
 import com.mckinsey.service.UserService;
 import com.mckinsey.utilities.JwtUtil;
@@ -81,6 +86,34 @@ class UserControllerTest {
 				.andExpect(status().isCreated()).andExpect(jsonPath("$.username").value("newUser"));
 	}
 
+	@Test
+    void testCreateAuthenticationToken_Success() throws Exception {
+        AuthRequest authRequest = new AuthRequest();
+        authRequest.setUsername("testuser");
+        authRequest.setPassword("password");
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername("testuser")
+                .password("password")
+                .authorities("USER")
+                .build();
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(mock(Authentication.class));
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(userDetails);
+        when(jwtUtil.generateToken(userDetails)).thenReturn("jwt-token");
+
+        MvcResult result = mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(authRequest)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String response = result.getResponse().getContentAsString();
+        AuthResponse authResponse = new ObjectMapper().readValue(response, AuthResponse.class);
+        assertEquals("jwt-token", authResponse.getJwt());
+    }
+	
 	// @Test
 	void testCreateAuthenticationToken() throws Exception {
 		AuthRequest authRequest = new AuthRequest();

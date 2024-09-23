@@ -2,6 +2,7 @@ package com.mckinsey.service;
 
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,15 +22,17 @@ public class UserService implements UserDetailsService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtUtil jwtUtil;
-	private static final String APP_USR = "hridesh";
+	
+	@Value("${app.user}")
+	private String appUser;
 	
 	
 	// Load initial user
 	@PostConstruct
 	public void createUsers() {
 		User employee = new User();
-		employee.setUsername(APP_USR);
-		employee.setPassword(passwordEncoder.encode(APP_USR));
+		employee.setUsername(appUser);
+		employee.setPassword(passwordEncoder.encode(appUser));
 		userRepository.save(employee);
 		
 	}
