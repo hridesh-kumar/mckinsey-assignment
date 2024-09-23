@@ -19,47 +19,43 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.McKinsey.Controllers.DiscountController;
-import com.McKinsey.dtos.Item;
-import com.McKinsey.services.DiscountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mckinsey.dtos.Item;
+import com.mckinsey.services.DiscountService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DiscountControllerTest {
+class DiscountControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Mock
-    private DiscountService discountService;
+	@Mock
+	private DiscountService discountService;
 
-    @InjectMocks
-    private DiscountController discountController;
+	@InjectMocks
+	private DiscountController discountController;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    public void testGetDiscountedAmount() throws Exception {
-        List<Item> items = Arrays.asList(new Item("item1", "",100.0), new Item("item2", "", 200.0));
-        String userType = "regular";
-        int tenure = 5;
-        double discountedAmount = 270.0;
+	@Test
+	void testGetDiscountedAmount() throws Exception {
+		List<Item> items = Arrays.asList(new Item("item1", "", 100.0), new Item("item2", "", 200.0));
+		String userType = "regular";
+		int tenure = 5;
+		double discountedAmount = 270.0;
 
-        when(discountService.calculateDiscountedAmount(items, userType, tenure)).thenReturn(discountedAmount);
+		when(discountService.calculateDiscountedAmount(items, userType, tenure)).thenReturn(discountedAmount);
 
-        mockMvc.perform(post("/discount")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(items))
-                .param("userType", userType)
-                .param("tenure", String.valueOf(tenure)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.disCountedAmount").value(discountedAmount));
-    }
+		mockMvc.perform(post("/discount").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(items)).param("userType", userType)
+				.param("tenure", String.valueOf(tenure))).andExpect(status().isOk())
+				.andExpect(jsonPath("$.disCountedAmount").value(discountedAmount));
+	}
 }

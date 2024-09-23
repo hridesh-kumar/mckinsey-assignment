@@ -1,4 +1,4 @@
-package com.McKinsey.discounthandler;
+package com.mckinsey.discounthandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.McKinsey.dtos.Item;
+import com.mckinsey.dtos.Item;
 
 public class HundredDollarDiscountHandler implements DiscountHandler {
 
@@ -22,11 +22,9 @@ public class HundredDollarDiscountHandler implements DiscountHandler {
 	@Override
 	public double applyDiscount(List<Item> items, String role) {
 
-		double totalAmount = items.stream().map(item -> {
-			return item.getPrice();
-		}).collect(Collectors.summingDouble(v -> v));
+		double totalAmount = items.stream().map(item -> item.getPrice()).collect(Collectors.summingDouble(v -> v));
 
-		double discount = (int) (totalAmount / 100) * 5;
+		double discount = (totalAmount / 100) * 5;
 
 		logger.info("Every Hundred total discount: {}", discount);
 

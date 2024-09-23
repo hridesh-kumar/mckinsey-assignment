@@ -1,4 +1,4 @@
-package com.McKinsey.dtos;
+package com.mckinsey.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,5 @@
 package com.mckinsey.services;
 
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
@@ -12,42 +10,34 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import com.McKinsey.dtos.Item;
-import com.McKinsey.services.DiscountService;
+import com.mckinsey.dtos.Item;
 
-public class DiscountServiceTest {
+class DiscountServiceTest {
 
-    @InjectMocks
-    private DiscountService discountService;
+	@InjectMocks
+	private DiscountService discountService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-   
+	@Test
+	void testCalculateDiscountedAmount() {
+		List<Item> items = Arrays.asList(new Item("item1", "cloth", 100.0), new Item("item2", "grocery", 200.0));
+		int tenure = 5;
 
-    @Test
-    public void testCalculateDiscountedAmount() {
-        List<Item> items = Arrays.asList(
-            new Item("item1", "cloth", 100.0),
-            new Item("item2", "grocery", 200.0)
-        );
-        int tenure = 5;
-       
+		double empDiscountedAmount = discountService.calculateDiscountedAmount(items, "employee", tenure);
 
-        double empDiscountedAmount = discountService.calculateDiscountedAmount(items, "employee", tenure);
+		assertEquals(255.0, empDiscountedAmount);
 
-        assertEquals(255.0, empDiscountedAmount);
+		double affiDiscountedAmount = discountService.calculateDiscountedAmount(items, "affiliate", tenure);
 
-        double affiDiscountedAmount = discountService.calculateDiscountedAmount(items, "affiliate", tenure);
+		assertEquals(275.0, affiDiscountedAmount);
 
-        assertEquals(275.0, affiDiscountedAmount);
-        
-        double regularDiscountedAmount = discountService.calculateDiscountedAmount(items, "regular", tenure);
+		double regularDiscountedAmount = discountService.calculateDiscountedAmount(items, "regular", tenure);
 
-        assertEquals(280.0, regularDiscountedAmount);
-        
-    }
+		assertEquals(280.0, regularDiscountedAmount);
+
+	}
 }
-

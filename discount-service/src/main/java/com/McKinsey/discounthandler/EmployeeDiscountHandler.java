@@ -1,4 +1,4 @@
-package com.McKinsey.discounthandler;
+package com.mckinsey.discounthandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.McKinsey.dtos.Item;
+import com.mckinsey.dtos.Item;
 
 public class EmployeeDiscountHandler implements DiscountHandler {
 

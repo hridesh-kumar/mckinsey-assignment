@@ -9,7 +9,7 @@
 		<version>3.3.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.McKinsey</groupId>
+	<groupId>com.mckinsey</groupId>
 	<artifactId>discount-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>discount-service</name>

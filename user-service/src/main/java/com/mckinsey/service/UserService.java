@@ -21,24 +21,16 @@ public class UserService implements UserDetailsService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtUtil jwtUtil;
+	private static final String APP_USR = "hridesh";
+	
 	
 	// Load initial user
 	@PostConstruct
 	public void createUsers() {
 		User employee = new User();
-		employee.setUsername("hridesh");
-		employee.setPassword(passwordEncoder.encode("hridesh"));
+		employee.setUsername(APP_USR);
+		employee.setPassword(passwordEncoder.encode(APP_USR));
 		userRepository.save(employee);
-		
-		User affiliate = new User();
-		affiliate.setUsername("kumar");
-		affiliate.setPassword(passwordEncoder.encode("kumar"));
-		userRepository.save(affiliate);
-		
-		User customer = new User();
-		customer.setUsername("customer");
-		customer.setPassword(passwordEncoder.encode("customer"));
-		userRepository.save(customer);
 		
 	}
 	

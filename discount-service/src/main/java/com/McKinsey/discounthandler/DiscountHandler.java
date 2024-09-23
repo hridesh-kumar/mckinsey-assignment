@@ -1,8 +1,8 @@
-package com.McKinsey.discounthandler;
+package com.mckinsey.discounthandler;
 
 import java.util.List;
 
-import com.McKinsey.dtos.Item;
+import com.mckinsey.dtos.Item;
 
 
 

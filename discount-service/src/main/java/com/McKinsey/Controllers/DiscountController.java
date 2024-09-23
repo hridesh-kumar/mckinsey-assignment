@@ -1,4 +1,4 @@
-package com.McKinsey.Controllers;
+package com.mckinsey.controllers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.McKinsey.dtos.Item;
-import com.McKinsey.services.DiscountService;
+import com.mckinsey.dtos.Item;
+import com.mckinsey.services.DiscountService;
 
 @RestController
 @RequestMapping("/discount")
@@ -28,12 +28,12 @@ public class DiscountController {
 	@PostMapping
 	public ResponseEntity<Map<String, Double>> getDiscountedAmount(@RequestBody List<Item> items,
 			@RequestParam String userType, @RequestParam int tenure) {
-		Map<String, Double> response = new HashMap<String, Double>();
+		Map<String, Double> response = new HashMap<>();
 
 		double disCountedAmount = discountService.calculateDiscountedAmount(items, userType, tenure);
 
 		response.put("disCountedAmount", disCountedAmount);
-		return new ResponseEntity<Map<String, Double>>(response, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }
