@@ -39,7 +39,7 @@ mvn clean verify sonar:sonar -Dsonar.projectKey=<projectKey> -Dsonar.projectName
 ```
 
 #### Result
-![discount service](./images/sonar-report.png)
+![sonar report](./images/sonar-report.png)
 
 #### How to Run and test
 
